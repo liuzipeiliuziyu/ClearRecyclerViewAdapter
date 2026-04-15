@@ -1,6 +1,6 @@
 # ClearRecyclerViewAdapter
 
-🚀 **一个基于 ASM 插桩的 Android 插件，自动清除 Fragment 中的 RecyclerView Adapter，彻底告别由于 View 销毁不及时导致的内存泄漏。**
+🚀 **一种基于 ASM 字节码转换引擎的 Android 内存泄露无感治理方案。通过在编译期执行 AOP 静态织入，实现 Fragment 生命周期与资源引用的强制解耦，根除视图层级在闭环过程中的隐匿性内存冗余。**
 
 ## 📖 项目简介
 
