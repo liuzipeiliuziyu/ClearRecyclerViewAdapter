@@ -33,7 +33,7 @@ pluginManagement {
 
 ```kotlin
 plugins {
-    id("com.kintory.plugin.recyclerview-clear")
+    id("io.github.liuzipeiliuziyu.recyclerview-clear") version "1.0.1"
 }
 
 // 强烈建议配置包名过滤器，以提升编译性能并避免误伤第三方库
@@ -42,7 +42,7 @@ recyclerViewClear {
 }
 
 dependencies {
-    implementation(project(":ClearRecyclerViewAdapter"))
+    implementation("io.github.liuzipeiliuziyu:recyclerview-clear-adapter:1.0.0")
 }
 ```
 

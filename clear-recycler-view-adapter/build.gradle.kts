@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     `maven-publish`
+    `signing`
 }
 
 android {
@@ -41,7 +42,7 @@ afterEvaluate {
         publications {
             create<MavenPublication>("maven") {
                 // 从 gradle.properties 中读取属性，注意增加非空判断或默认值
-                groupId = project.findProperty("GROUP_ID")?.toString() ?: "com.kintory"
+                groupId = project.findProperty("GROUP_ID")?.toString() ?: "io.github.liuzipeiliuziyu"
                 artifactId = "recyclerview-clear-adapter"
                 version = project.findProperty("VERSION_NAME")?.toString() ?: "1.0.0"
                 
@@ -76,7 +77,7 @@ afterEvaluate {
         
         // 配置发布到的仓库 (如果需要发布到本地或特定仓库)
         repositories {
-            maven {
+            /*maven {
                 name = "mavenCentral"
                 // 这里的 URL 会根据 Sonatype 的要求变化，通常是 https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/
                 url = uri(project.findProperty("RELEASE_REPOSITORY_URL")?.toString() ?: layout.buildDirectory.dir("outputs/repo"))
@@ -84,7 +85,20 @@ afterEvaluate {
                     username = project.findProperty("mavenCentralUsername")?.toString()
                     password = project.findProperty("mavenCentralPassword")?.toString()
                 }
+            }*/
+            maven {
+                name = "local"
+                url = uri(layout.buildDirectory.dir("outputs/repo"))
             }
         }
     }
+}
+
+signing {
+    val signingKeyFile = findProperty("signing.keyFile")?.toString()
+    val signingKey = signingKeyFile?.let { File(it).readText() }
+    val signingPassword = findProperty("signing.password")?.toString()
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
+    isRequired = true
 }

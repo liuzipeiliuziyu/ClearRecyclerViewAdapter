@@ -1,11 +1,11 @@
 plugins {
     `kotlin-dsl`
     `maven-publish`
+    `signing`
 }
 
-// 设置项目层级的 group 和 version，供发布使用
-group = project.findProperty("GROUP_ID")?.toString() ?: "com.liuzipei.plugin"
-version = project.findProperty("VERSION_NAME")?.toString() ?: "1.0.0"
+group = project.findProperty("GROUP_ID")?.toString() ?: "io.github.liuzipeiliuziyu"
+version = project.findProperty("VERSION_NAME")?.toString() ?: "1.0.1"
 
 repositories {
     maven { url = uri("https://maven.aliyun.com/repository/google") }
@@ -14,10 +14,15 @@ repositories {
     mavenCentral()
 }
 
-// 生成源码和文档 Jar 包（Maven Central 强制要求）
 java {
     withSourcesJar()
     withJavadocJar()
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {
@@ -29,7 +34,8 @@ dependencies {
 gradlePlugin {
     plugins {
         create("recyclerViewClearPlugin") {
-            id = "com.kintory.plugin.recyclerview-clear"
+            // 🔥 把插件ID改成你有权限的 namespace！
+            id = "io.github.liuzipeiliuziyu.recyclerview-clear"
             implementationClass = "com.kintory.plugin.RecyclerViewClearPlugin"
         }
     }
@@ -37,10 +43,10 @@ gradlePlugin {
 
 publishing {
     publications {
-        // 使用 withType<MavenPublication> 统一配置插件本身及其 Marker 的 POM 信息
         withType<MavenPublication> {
+            artifactId = "RecyclerViewClearPlugin"
             pom {
-                name.set(project.findProperty("POM_NAME")?.toString())
+                name.set("ClearRecyclerViewPlugin")
                 description.set(project.findProperty("POM_DESCRIPTION")?.toString())
                 url.set(project.findProperty("POM_URL")?.toString())
                 licenses {
@@ -64,16 +70,20 @@ publishing {
             }
         }
     }
-    
+
     repositories {
         maven {
-            name = "mavenCentral"
-            // 默认发布到本地 build/outputs/repo，可通过属性配置正式仓库 URL
-            url = uri(project.findProperty("RELEASE_REPOSITORY_URL")?.toString() ?: layout.buildDirectory.dir("outputs/repo"))
-            credentials {
-                username = project.findProperty("mavenCentralUsername")?.toString()
-                password = project.findProperty("mavenCentralPassword")?.toString()
-            }
+            name = "local"
+            url = uri(layout.buildDirectory.dir("outputs/repo"))
         }
     }
+}
+
+signing {
+    val signingKeyFile = findProperty("signing.keyFile")?.toString()
+    val signingKey = signingKeyFile?.let { File(it).readText() }
+    val signingPassword = findProperty("signing.password")?.toString()
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
+    isRequired = true
 }

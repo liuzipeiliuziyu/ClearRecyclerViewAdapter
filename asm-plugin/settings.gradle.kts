@@ -1,18 +1,15 @@
 pluginManagement {
     repositories {
-        maven(url = "https://oss.sonatype.org/content/repositories/releases/")
         maven { url = uri("https://maven.aliyun.com/repository/google") }
         maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
-    // 关键：修改包含构建的文件夹名称
-//    includeBuild("asm-plugin")
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         maven { url = uri("https://maven.aliyun.com/repository/google") }
         maven { url = uri("https://maven.aliyun.com/repository/public") }
@@ -21,6 +18,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ClearRecyclerViewAdapter"
-include(":app")
-include(":clear-recycler-view-adapter")
+rootProject.name = "asm-plugin"

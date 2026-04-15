@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.kintory.plugin.recyclerview-clear")
+    id("io.github.liuzipeiliuziyu.recyclerview-clear") version "1.0.1"
 }
 
 android {
@@ -31,7 +31,8 @@ recyclerViewClear {
 }
 
 dependencies {
-    implementation(project(":clear-recycler-view-adapter"))
+//    implementation(project(":clear-recycler-view-adapter"))
+    implementation("io.github.liuzipeiliuziyu:recyclerview-clear-adapter:1.0.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
