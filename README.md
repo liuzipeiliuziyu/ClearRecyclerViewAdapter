@@ -15,19 +15,7 @@
 - **安全可靠**：自动识别 `androidx` 和 `android.app` 的 Fragment 继承链，确保 `getView()` 调用准确。
 - **深度清理**：递归遍历布局树，自动发现并清理嵌套在容器中的所有 RecyclerView。
 
-## 📦 安装与使用
-
-### 1. 引入插件 (Included Build 方式)
-
-将 `asm-plugin` 放入你的项目，并在 `settings.gradle.kts` 中引入：
-
-```kotlin
-pluginManagement {
-    includeBuild("asm-plugin")
-}
-```
-
-### 2. 应用插件与配置
+### . 应用插件与配置
 
 在 `app` 模块的 `build.gradle.kts` 中应用插件并指定插桩包名：
 
